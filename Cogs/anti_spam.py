@@ -44,7 +44,7 @@ class AntiSpamCog(commands.Cog):
             await ctx.channel.send(embed = antispam_disable_embed)
         
         # Updating Data in Config file
-        with open("config.json") as file:
+        with open("config.json", 'w') as file:
             file.write(updated_data)
 
 
