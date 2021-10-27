@@ -32,13 +32,6 @@ for cog in os.listdir("Cogs"):
         except Exception as e:
             print(f"Failed to load {cog[:-3]}, error: {e}")
 
-@bot.event
-async def on_message(message):
-    if bot.user.mentioned_in(message):
-        response = ["what's up?", "what happend kid?", "Hello 👋", "I am watching 👁‍🗨", "How are you doing?", "Feeling safe?", "Everything OK?"]
-        await message.channel.send(f"🦅: {choice(response)}, Btw all commands are available at `~help`")
-    await bot.process_commands(message)
-
 
 @bot.event
 async def on_ready():
