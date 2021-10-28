@@ -23,7 +23,7 @@ class AntiSpamCog(commands.Cog):
             antispam_enable_embed = discord.Embed(
                 title = "**ANTI-SPAM ENABLED**",
                 description = "🦅: Anti-Spam Has Been Enabled 👁‍🗨",
-                color = 0x2fa737    # Green Color
+                color = 0x00FF00    # Green Color
             )
 
             await ctx.channel.send(embed = antispam_enable_embed)
@@ -38,7 +38,7 @@ class AntiSpamCog(commands.Cog):
             antispam_disable_embed = discord.Embed(
                 title = "**ANTI-SPAM DISABLED**",
                 description = "🦅: Anti-Spam Has Been Disabled ❌",
-                color = 0xe00000    # Red Color
+                color = 0xFF0000    # Red Color
             )
 
             await ctx.channel.send(embed = antispam_disable_embed)
