@@ -1,6 +1,6 @@
 import os
-from random import choice
 import discord
+
 from discord.ext import commands
 from dotenv import load_dotenv
 
