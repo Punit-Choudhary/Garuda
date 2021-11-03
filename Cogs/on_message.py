@@ -1,3 +1,4 @@
+import re
 import discord
 from random import choice
 from discord.ext import commands
@@ -67,6 +68,27 @@ class OnMessageCog(commands.Cog):
                  color = 0x00FF00   # Green
                 )
                 await message.channel.send(embed = spam_kick_embed)
+        
+        # Anti-Link
+        if config['antiLink']:
+            def check_link(message) -> bool:
+                urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9][$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F]))+', message.content.lower())
+                if urls:
+                    return True
+                else:
+                    return False
+            
+            if check_link(message):
+                # delete the message if that contains link
+                await message.delete()
+                
+                links_delete_embed = discord.Embed(
+                    title = "**No Links!**",
+                    description = f"🦅: {message.author.mention}, you are not allowed to send links here!",
+                    color = 0xFF0000    # Red
+                )
+                await message.channel.send(embed = links_delete_embed, delete_after=10)
+
 
 
 # Setup bot

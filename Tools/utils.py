@@ -10,7 +10,8 @@ def getConfig(guildID):
         # Create configuration for new guild
         defaultConfig = {
             "prefix": "~",
-            "antiSpam": True
+            "antiSpam": True,
+            "antiLink": True
         }
 
         updateConfig(guildID, defaultConfig)
