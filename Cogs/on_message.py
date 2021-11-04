@@ -19,21 +19,33 @@ class OnMessageCog(commands.Cog):
     async def on_message(self, message):
 
         # Don't reply/watch messages from bots
-        if message.author.bot or message.author.guild_permissions.administrator:
+        if message.author.bot:
             return
-        
+                
 
         # Check for mention
         if self.bot.user.mentioned_in(message):
             responses = ["what's up?", "what happend kid?", "Hello 👋", "I am watching 👁‍🗨", "How are you doing?", "Feeling safe?", "Everything OK?"]
 
-            reply = discord.Embed(
-                title = "Garuda 🦅",
-                description = f"🦅: {choice(responses)}, Btw all commands are available at `~help`",
-                color = 0xFFFF00
-            )
+            if message.author.id != 742931080096776242:
+                reply = discord.Embed(
+                    title = "Garuda 🦅",
+                    description = f"🦅: {choice(responses)}, Btw all commands are available at `~help`",
+                    color = 0xFFFF00
+                )
+            else:
+                latency = round(self.bot.latency * 1000, 2)
+                reply = discord.Embed(
+                    title = "Garuda 🦅",
+                    description = f"🦅: I am active & doing my job,\nlatency: {latency}ms",
+                    color = 0xFFFF00
+                )
             await message.channel.send(embed = reply)
-        
+
+        # Don't watch Admin's messages        
+        if message.author.guild_permissions.administrator:
+            return
+
 
         # Config
         config = getConfig(message.guild.id)
