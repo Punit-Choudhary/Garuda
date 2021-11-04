@@ -11,7 +11,9 @@ def getConfig(guildID):
         defaultConfig = {
             "prefix": "~",
             "antiSpam": True,
-            "antiLink": True
+            "antiLink": True,
+            "whiteListedDomains": [],
+            "blackListedDomains": []
         }
 
         updateConfig(guildID, defaultConfig)
