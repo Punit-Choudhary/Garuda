@@ -27,6 +27,9 @@ class Domains(commands.Cog):
         urls = re.findall(regex, message.lower())
         return urls
  
+
+# ----------- Whitelisting commands ------------- #
+
     @commands.command(name="addwhite")
     @has_permissions(administrator = True)
     async def addwhite(self, ctx, *args):
@@ -68,12 +71,67 @@ class Domains(commands.Cog):
                     title = "**Domain White-listed Successfully**",
                     description = f"🦅: Given domain `{url}` has been "\
                         "successfully `whitelisted` ✅",
-                    color = 0x00FF00
+                    color = 0x00FF00    # Green
                 )
 
                 updateConfig(ctx.guild.id, config)
                 await ctx.channel.send(embed = addwhite_added_embed)
+    
 
+    @commands.command(name="removewhite")
+    @has_permissions(administrator = True)
+    async def removewhite(self, ctx, *args):
+        """
+        Remove given domain urls from whitelisted category
+        usage example: ~removewhite https://youtube.com
+        """
+
+        # get config file
+        config = getConfig(ctx.guild.id)
+        data = config['whiteListedDomains']
+        data_blacklisted = config['blackListedDomains']
+
+        message = " ".join(arg for arg in args)
+        urls = self.extract_links(message)
+
+        for url in urls:
+            if url in data:
+                # remove url from list
+                data.remove(url)
+
+                removewhite_success_embed = discord.Embed(
+                    title = "**Domain Removed Successfully**",
+                    description = f"🦅: Successfully removed `{url}` from `white-listed` "\
+                        "domains list.",
+                    color = 0x00FF00    # Green
+                )
+
+                updateConfig(ctx.guild.id, config)
+                await ctx.channel.send(embed = removewhite_success_embed)
+
+            elif url in data_blacklisted:
+                removewhite_blacklisted_embed = discord.Embed(
+                    title = "**Domain Not Found**",
+                    description = f"🦅: Given domain `{url}` is not `white-listed`."\
+                        f"\nHowever it is `black-listed`, use `~removeblack {url}` to remove.",
+                    color = 0xedbe13    # yellow
+                )
+
+                await ctx.channel.send(embed = removewhite_blacklisted_embed)
+            
+            else:
+                removewhite_notfound_embed = discord.Embed(
+                    title = "**Domain Not Found**",
+                    description = f"🦅: Give domain `{url}` is neither `white-listed` nor "\
+                        "`black-listed`",
+                    color = 0xFF0000    # Red
+                )
+
+                await ctx.channel.send(embed = removewhite_notfound_embed)
+
+
+
+# ------------- BlackListing Commands -------------- #
 
     @commands.command(name="addblack")
     @has_permissions(administrator = True)
@@ -123,6 +181,57 @@ class Domains(commands.Cog):
                 updateConfig(ctx.guild.id, config)
                 await ctx.channel.send(embed = addblack_added_embed)
 
+
+    @commands.command(name="removeblack")
+    @has_permissions(administrator = True)
+    async def removeblack(self, ctx, *args):
+        """
+        Remove given domain urls from whitelisted category
+        usage example: ~removeblack https://youtube.com
+        """
+
+        # get config file
+        config = getConfig(ctx.guild.id)
+        data = config['blackListedDomains']
+        data_whitelisted = config['whiteListedDomains']
+
+        message = " ".join(arg for arg in args)
+        urls = self.extract_links(message)
+
+        for url in urls:
+            if url in data:
+                # remove url from list
+                data.remove(url)
+
+                removeblack_success_embed = discord.Embed(
+                    title = "**Domain Removed Successfully**",
+                    description = f"🦅: Successfully removed `{url}` from `black-listed` "\
+                        "domains list.",
+                    color = 0x00FF00    # Green
+                )
+
+                updateConfig(ctx.guild.id, config)
+                await ctx.channel.send(embed = removeblack_success_embed)
+
+            elif url in data_whitelisted:
+                removeblack_whitelisted_embed = discord.Embed(
+                    title = "**Domain Not Found**",
+                    description = f"🦅: Given domain `{url}` is not `black-listed`."\
+                        f"\nHowever it is `white-listed`, use `~removewhite {url}` to remove.",
+                    color = 0xedbe13    # yellow
+                )
+
+                await ctx.channel.send(embed = removeblack_whitelisted_embed)
+            
+            else:
+                removeblack_notfound_embed = discord.Embed(
+                    title = "**Domain Not Found**",
+                    description = f"🦅: Give domain `{url}` is neither `black-listed` nor "\
+                        "`white-listed`",
+                    color = 0xFF0000    # Red
+                )
+
+                await ctx.channel.send(embed = removeblack_notfound_embed)
 
 # Setup
 def setup(bot):
