@@ -128,6 +128,37 @@ class Domains(commands.Cog):
                 )
 
                 await ctx.channel.send(embed = removewhite_notfound_embed)
+    
+
+    @commands.command(name="getwhite")
+    async def getwhite(self, ctx):
+        """
+        Return all domains that are allowed by admins
+        in the server.
+        """
+
+        # get config file
+        config = getConfig(ctx.guild.id)
+        data = config['whiteListedDomains']
+
+        if data:
+            domains = "\n".join(url for url in data)
+
+            getwhite_domains_embed = discord.Embed(
+                title = "**Allowed Domains ✅**",
+                description = f"🦅: These are the domains which are allowed in **{ctx.guild.name}**:\n" + domains,
+                color = 0xffffff
+            )
+
+            await ctx.channel.send(embed = getwhite_domains_embed)
+        else:
+            getwhite_notfound_embed = discord.Embed(
+                title = "**Error 404**",
+                description = f"🦅: Looks like **{ctx.guild.name}** don't have any white-listed domain.",
+                color = 0xFF0000
+            )
+
+            await ctx.channel.send(embed = getwhite_notfound_embed)
 
 
 
@@ -232,6 +263,38 @@ class Domains(commands.Cog):
                 )
 
                 await ctx.channel.send(embed = removeblack_notfound_embed)
+
+
+    @commands.command(name="getblack")
+    async def getblack(self, ctx):
+        """
+        Return all domains that are not allowed by admins
+        in the server.
+        """
+
+        # get config file
+        config = getConfig(ctx.guild.id)
+        data = config['blackListedDomains']
+
+        if data:
+            domains = "\n".join(url for url in data)
+
+            getblack_domains_embed = discord.Embed(
+                title = "**Black Listed Domains ❌**",
+                description = f"🦅: These are the domains which are not allowed in **{ctx.guild.name}**:\n ```{domains}```",
+                color = 0x000000
+            )
+
+            await ctx.channel.send(embed = getblack_domains_embed)
+        else:
+            getblack_notfound_embed = discord.Embed(
+                title = "**Error 404**",
+                description = f"🦅: Looks like **{ctx.guild.name}** don't have any black-listed domain.",
+                color = 0xFF0000
+            )
+
+            await ctx.channel.send(embed = getblack_notfound_embed)
+
 
 # Setup
 def setup(bot):
