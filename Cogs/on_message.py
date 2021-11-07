@@ -82,25 +82,71 @@ class OnMessageCog(commands.Cog):
                 await message.channel.send(embed = spam_kick_embed)
         
         # Anti-Link
+        def extract_urls(message) -> bool:
+            regex=r'(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}'
+            urls = re.findall(regex, message.content.lower())
+            if urls:
+                return urls
+            else:
+                return []
+
         if config['antiLink']:
-            def check_link(message) -> bool:
-                regex=r"\b((?:https?://)?(?:(?:www\.)?(?:[\da-z\.-]+)\.(?:[a-z]{2,6})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(?::[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(?:ffff(?::0{1,4}){0,1}:){0,1}(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])|(?:[0-9a-fA-F]{1,4}:){1,4}:(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])))(?::[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])?(?:/[\w\.-]*)*/?)\b"
-                urls = re.findall(regex, message.content.lower())
-                if urls:
-                    return True
-                else:
-                    return False
-            
-            if check_link(message):
-                # delete the message if that contains link
-                await message.delete()
-                
-                links_delete_embed = discord.Embed(
-                    title = "**No Links!**",
-                    description = f"🦅: {message.author.mention}, you are not allowed to send links here!",
-                    color = 0xFF0000    # Red
-                )
-                await message.channel.send(embed = links_delete_embed, delete_after=10)
+            """
+            If anti-link is enabled, allow White-Listed Domains Only!
+            Delete the message if any of the url in message is not White-listed.
+            """
+
+            whitelisted = config['whiteListedDomains']
+            urls = extract_urls(message)
+
+            if urls:
+                """
+                Check if all links are white-listed
+                """
+
+                for url in urls:
+                    if url not in whitelisted:
+                        await message.delete()
+                        await message.channel.send(
+                            embed = discord.Embed(
+                                title = "**❌ Not Allowed ❌**",
+                                description = f"🦅: Hey kiddo {message.author.mention}, Only white-listed links are \
+                                    allowed in **{message.guild.name}**\n**Tip:**\
+                                    Use `~getwhite` or `~getblack` to view `White-Listed` and \
+                                    `Black-Listed` domains.",
+                                color = 0xFF0000
+                            ), 
+                        delete_after = 20
+                        )
+                        return
+        else:
+            """
+            Delete message containing Blacklisted link
+            """
+            print("Hey")
+            blacklisted = config['blackListedDomains']
+            urls = extract_urls(message)
+            print(urls)
+
+            if urls:
+                print("Hello")
+                for url in urls:
+                    if url in blacklisted:
+                        print("hehe")
+                        await message.delete()
+                        await message.channel.send(
+                            embed = discord.Embed(
+                                title = "**❌ Not Allowed ❌",
+                                description = f"🦅: Hey kiddo {message.author.mention}, The link \
+                                    you just sent was Black-Listed, don't repeat that again!\n \
+                                    **Tip:** Use `~getwhite` or `~getblack` to view `White-Listed` and \
+                                    `Black-Listed` domains.",
+                                color = 0xFF0000
+                            ),
+                        delete_after = 20
+                        )
+                        return
+
 
 
 
