@@ -11,15 +11,18 @@ TOKEN = os.getenv("TOKEN")
 # Setting up Discord Intents
 intents = discord.Intents.default()
 intents.members = True
+intents.presences = True
 
 
 bot = commands.Bot(
     command_prefix = "~",
     intents = intents,
     case_insensitivity = True,
-    strip_after_prefix = True
+    strip_after_prefix = True,
+    owner_id = 742931080096776242
 )
 
+bot.remove_command("help")
 
 # Loading Cogs
 for cog in os.listdir("Cogs"):
