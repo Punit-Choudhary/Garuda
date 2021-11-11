@@ -25,7 +25,7 @@ class UnlockChannelCog(commands.Cog):
         await ctx.channel.edit(name=ctx.channel.name.replace("🔒-", "", 1))
 
         unlock_successful_embed = discord.Embed(
-            title = "🔓 Channel Unlocked",
+            title = "🦅: 🔓 Channel Unlocked",
             color = 0x00FF00    # Green
         )
 

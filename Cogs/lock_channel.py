@@ -25,7 +25,7 @@ class LockChannelCog(commands.Cog):
         await ctx.channel.set_permissions(ctx.guild.default_role, overwrite=perms)
 
         lock_success_embed = discord.Embed(
-            title = f"**🔒 channel locked**",
+            title = f"**🦅: 🔒 channel locked**",
             color = 0xFF0000    # Red
         )
 
