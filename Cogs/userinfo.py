@@ -49,7 +49,10 @@ class UserInfo(commands.Cog):
             status = '🟢 Online'
         userinfo_embed.add_field(name="Status", value=status, inline=True)
 
-        userinfo_embed.add_field(name="Activity", value=user.activities[0].name, inline=True)
+        if user.activities:
+            userinfo_embed.add_field(name="Activity", value=user.activities[0].name, inline=True)
+        else:
+            userinfo_embed.add_field(name="Activity", value="None", inline=True)
         userinfo_embed.add_field(name="Account Created", value=user.created_at.__format__('%A, %d. %B %Y @ %H:%M:%S'))
         userinfo_embed.add_field(name="Joined At", value=user.joined_at.__format__('%A, %d. %B %Y @ %H:%M:%S'))
         userinfo_embed.set_thumbnail(url=user.avatar_url)
