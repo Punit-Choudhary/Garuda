@@ -3,6 +3,7 @@ import discord
 
 from discord.ext import commands
 from dotenv import load_dotenv
+from Tools.utils import get_prefix
 
 
 load_dotenv()
@@ -15,7 +16,7 @@ intents.presences = True
 
 
 bot = commands.Bot(
-    command_prefix = "~",
+    command_prefix = get_prefix,
     intents = intents,
     case_insensitivity = True,
     strip_after_prefix = True,

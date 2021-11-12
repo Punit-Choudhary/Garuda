@@ -31,3 +31,11 @@ def updateConfig(guildID, data):
 
     with open("config.json", 'w') as file:
         file.write(updated_data)
+
+
+async def get_prefix(bot, message) -> str:
+    if not message.guild:
+        return "~"
+    else:
+        data = getConfig(message.guild.id)
+        return data["prefix"]
