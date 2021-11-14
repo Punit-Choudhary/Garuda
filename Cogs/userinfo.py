@@ -5,16 +5,16 @@ from discord.ext import commands
 
 
 class UserInfo(commands.Cog):
+    """Get info about a member in the server."""
     def __init__(self, bot):
         self.bot = bot
     
     
-    @commands.command(name="userinfo")
+    @commands.command(name="userinfo", usage="@member")
     @commands.guild_only()
     async def userinfo(self, ctx, *, user=""):
         """
         Get user-info.
-        usage: ~userinfo @user
         """
 
         if user:

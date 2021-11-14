@@ -10,15 +10,11 @@ from Tools.utils import getConfig, updateConfig
 
 class Domains(commands.Cog):
     """
-    This class contain functions to manage white-listed
-    and blacklisted domains.
-    
-    --> white-listed domains will be allowed even if anti-link
-        is enabled.
-    --> black-listed domains will not be allowed even if
-        anti-link is disabled.
+    Classify Domains.
+    White-Listed domains ==> Allowed even if Anti-Link is Enabled.
+    Black-Listed domains ==> Not Allowed even if Anti-Link is Disabled.
+    url example: https://www.youtube.com/
     """
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -30,12 +26,12 @@ class Domains(commands.Cog):
 
 # ----------- Whitelisting commands ------------- #
 
-    @commands.command(name="addwhite")
+    @commands.command(name="addwhite",
+                        usage="domain-url")
     @has_permissions(administrator = True)
     async def addwhite(self, ctx, *args):
         """
         Mark domain as white-listed.
-        usage example: ~addwhite https://youtube.com
         """
 
         # get config file
@@ -78,12 +74,12 @@ class Domains(commands.Cog):
                 await ctx.channel.send(embed = addwhite_added_embed)
     
 
-    @commands.command(name="removewhite")
+    @commands.command(name="removewhite",
+                        usage="domain-url")
     @has_permissions(administrator = True)
     async def removewhite(self, ctx, *args):
         """
-        Remove given domain urls from whitelisted category
-        usage example: ~removewhite https://youtube.com
+        Remove given domain urls from white-listed category
         """
 
         # get config file
@@ -130,7 +126,7 @@ class Domains(commands.Cog):
                 await ctx.channel.send(embed = removewhite_notfound_embed)
     
 
-    @commands.command(name="getwhite")
+    @commands.command(name="getwhite",usage="")
     async def getwhite(self, ctx):
         """
         Return all domains that are allowed by admins
@@ -164,12 +160,11 @@ class Domains(commands.Cog):
 
 # ------------- BlackListing Commands -------------- #
 
-    @commands.command(name="addblack")
+    @commands.command(name="addblack",usage="domain-url")
     @has_permissions(administrator = True)
     async def addblack(self, ctx, *args):
         """
-        Mark domain as white-listed.
-        usage example: ~addblack https://youtube.com
+        Mark domain as black-listed.
         """
 
         # get config file
@@ -213,12 +208,11 @@ class Domains(commands.Cog):
                 await ctx.channel.send(embed = addblack_added_embed)
 
 
-    @commands.command(name="removeblack")
+    @commands.command(name="removeblack", usage="domain-url")
     @has_permissions(administrator = True)
     async def removeblack(self, ctx, *args):
         """
-        Remove given domain urls from whitelisted category
-        usage example: ~removeblack https://youtube.com
+        Remove given domain urls from black-listed category
         """
 
         # get config file
@@ -265,10 +259,10 @@ class Domains(commands.Cog):
                 await ctx.channel.send(embed = removeblack_notfound_embed)
 
 
-    @commands.command(name="getblack")
+    @commands.command(name="getblack", usage="")
     async def getblack(self, ctx):
         """
-        Return all domains that are not allowed by admins
+        Return all domains that are NOT allowed by admins
         in the server.
         """
 

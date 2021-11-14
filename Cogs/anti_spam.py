@@ -1,4 +1,3 @@
-import json
 import discord
 
 from discord.ext import commands
@@ -7,14 +6,21 @@ from discord.ext.commands.core import has_permissions
 from Tools.utils import getConfig, updateConfig
 
 
-class AntiSpamCog(commands.Cog):
+class AntiSpamCog(commands.Cog, name="Anti Spamming"):
+    """
+    Enable or Disable Anti-Spam Property of Garuda.
+    When enabled, Garuda will warn or kick member if they try to spam in chat.
+    """
     def __init__(self, bot):
         self.bot = bot
     
 
-    @commands.command(name="antispam")
+    @commands.command(name = "antispam",
+                        usage = "<true|false>")
     @has_permissions(administrator = True)
     async def antispam(self, ctx, antispam):
+        """Enable or Disable Anti-Spam Property of Garuda."""
+        
         # get config of particular guild
         data = getConfig(ctx.guild.id)
         # data = json.load(config)

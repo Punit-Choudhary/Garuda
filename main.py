@@ -1,8 +1,10 @@
 import os
 import discord
 
-from discord.ext import commands
 from dotenv import load_dotenv
+from discord.ext import commands
+from pretty_help import PrettyHelp
+
 from Tools.utils import get_prefix
 
 
@@ -16,14 +18,15 @@ intents.presences = True
 
 
 bot = commands.Bot(
+    
     command_prefix = get_prefix,
     intents = intents,
     case_insensitivity = True,
     strip_after_prefix = True,
-    owner_id = 742931080096776242
+    owner_id = 742931080096776242,
+    help_command=PrettyHelp()
 )
 
-bot.remove_command("help")
 
 # Loading Cogs
 for cog in os.listdir("Cogs"):

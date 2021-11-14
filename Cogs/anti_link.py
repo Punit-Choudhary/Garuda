@@ -4,17 +4,25 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.core import has_permissions
 
-from Tools.utils import getConfig, updateConfig
+from Tools.utils import getConfig, updateConfig, get_prefix
 
 
-class AntiLinkCog(commands.Cog):
+class AntiLinkCog(commands.Cog, name="Anti Link"):
+    """
+    Enable or Disable Anti-Link Property of Garuda.
+    When enabled, Garuda will delete links except white-listed one.
+    """
     def __init__(self, bot):
         self.bot = bot
     
 
-    @commands.command(name="antilink")
+    @commands.command(name="antilink",
+                        usage = "<true|false>")
     @has_permissions(administrator = True)
     async def antilink(self, ctx, antilink):
+        """
+        Enable or Disable Anti-Link Property of Garuda.
+        """
         # get config file of guild
         data = getConfig(ctx.guild.id)
 

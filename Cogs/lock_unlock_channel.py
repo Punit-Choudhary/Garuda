@@ -1,16 +1,15 @@
 import discord
-from discord import channel
 
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 
 
-class LockUnlockCog(commands.Cog):
+class LockUnlockCog(commands.Cog, name="Lock-Unlock Channel"):
     def __init__(self, bot):
         self.bot = bot
 
 
-    @commands.command(name="lock")
+    @commands.command(name="lock", usage="")
     @has_permissions(administrator = True)
     @commands.guild_only()
     async def lock(self, ctx):
@@ -32,7 +31,7 @@ class LockUnlockCog(commands.Cog):
         await ctx.channel.send(embed = lock_success_embed)
 
 
-    @commands.command(name="unlock")
+    @commands.command(name="unlock", usage='')
     @has_permissions(administrator = True)
     @commands.guild_only()
     async def unlock(self, ctx):

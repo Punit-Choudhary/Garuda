@@ -3,7 +3,7 @@ import discord
 from random import choice
 from discord.ext import commands
 
-from Tools.utils import getConfig
+from Tools.utils import getConfig, get_prefix
 from datetime import datetime
 
 
@@ -27,10 +27,10 @@ class OnMessageCog(commands.Cog):
         if self.bot.user.mentioned_in(message):
             responses = ["what's up?", "what happend kid?", "Hello 👋", "I am watching 👁‍🗨", "How are you doing?", "Feeling safe?", "Everything OK?"]
 
-            if message.author.id != 742931080096776242:
+            if message.author.id != self.bot.owner_id:
                 reply = discord.Embed(
                     title = "Garuda 🦅",
-                    description = f"🦅: {choice(responses)}, Btw all commands are available at `~help`",
+                    description = f"🦅: {choice(responses)}, Btw all commands are available at `{await get_prefix(self.bot, message)}help`",
                     color = 0xFFFF00
                 )
             else:
