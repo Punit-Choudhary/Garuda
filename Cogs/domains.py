@@ -1,6 +1,5 @@
 import re
 import discord
-from discord import embeds
 
 from discord.ext import commands
 from discord.ext.commands.core import has_permissions

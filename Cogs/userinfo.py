@@ -1,5 +1,4 @@
 import discord
-from discord import role
 
 from discord.ext import commands
 

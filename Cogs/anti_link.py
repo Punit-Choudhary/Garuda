@@ -1,10 +1,9 @@
-import json
 import discord
 
 from discord.ext import commands
 from discord.ext.commands.core import has_permissions
 
-from Tools.utils import getConfig, updateConfig, get_prefix
+from Tools.utils import getConfig, updateConfig
 
 
 class AntiLinkCog(commands.Cog, name="Anti Link"):
