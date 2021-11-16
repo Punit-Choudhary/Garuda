@@ -59,6 +59,8 @@ class UserInfo(commands.Cog):
         additional_info = ""
         if user.id == ctx.guild.owner.id:
             additional_info += f"👑 Server owner of **{ctx.guild.name}**\n"
+        elif user.guild_permissions.administrator:
+            additional_info += f"🤴 Admin of **{ctx.guild.name}**\n"
         if user.id == self.bot.owner_id:
             additional_info += f"😎 Developer & owner of **{str(self.bot.user)[:-5]}**\n"
         
