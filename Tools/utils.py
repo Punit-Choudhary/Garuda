@@ -1,6 +1,6 @@
 import json
 
-def getConfig(guildID):
+def getConfig(guildID, ctx=None):
     """Open Config file of Guild"""
 
     with open("config.json", 'r') as file:
@@ -9,6 +9,7 @@ def getConfig(guildID):
     if str(guildID) not in data["guilds"]:
         # Create configuration for new guild
         defaultConfig = {
+            "name": f"{ctx.guild.name}",
             "prefix": "~",
             "antiSpam": True,
             "antiLink": True,
@@ -37,5 +38,5 @@ async def get_prefix(bot, message) -> str:
     if not message.guild:
         return "~"
     else:
-        data = getConfig(message.guild.id)
+        data = getConfig(message.guild.id, ctx=message)
         return data["prefix"]
