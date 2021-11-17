@@ -123,16 +123,12 @@ class OnMessageCog(commands.Cog):
             """
             Delete message containing Blacklisted link
             """
-            print("Hey")
             blacklisted = config['blackListedDomains']
             urls = extract_urls(message)
-            print(urls)
 
             if urls:
-                print("Hello")
                 for url in urls:
                     if url in blacklisted:
-                        print("hehe")
                         await message.delete()
                         await message.channel.send(
                             embed = discord.Embed(
