@@ -84,11 +84,29 @@ class ModerationCog(commands.Cog, name="Moderation Commands"):
             ban_embed.add_field(name="Banned Member 🚫", value=member.display_name)
             ban_embed.add_field(name="Banned By", value=ctx.author.mention)
             ban_embed.set_footer(text=f"Reason: {reason}")
-            ban_embed.set_image(url="https://media.tenor.co/videos/16d1dd77408db03a6c78210391957fc5/mp4")
+            ban_embed.set_thumbnail(url="https://media.tenor.co/videos/16d1dd77408db03a6c78210391957fc5/mp4")
 
             await ctx.send(embed = ban_embed)
         except Exception as e:
             print(e)
+    
+
+    @commands.command(name="clear", usage="<number of messages> | default 100")
+    @commands.has_permissions(manage_messages=True)
+    async def clear(self, ctx, amount=100):
+        """
+        Purge requested no. of messages from channel.
+        """
+        await ctx.channel.purge(limit=int(amount) + 1)
+
+        clear_embed = discord.Embed(
+            title="Message deleted!",
+            description=f"🦅: I've purged {amount} messages | **{ctx.author.name}**",
+            color=0x00FF00  # Green
+        )
+
+        await ctx.channel.send(embed=clear_embed, delete_after=10)
+    
 
 
 # Setup
