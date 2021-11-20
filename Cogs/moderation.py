@@ -51,7 +51,7 @@ class ModerationCog(commands.Cog, name="Moderation Commands"):
 
     @commands.command(name="ban", usage="<@member> [reason : optional]")
     @commands.has_permissions(ban_members=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
         """
         Ban a member from server
         """
