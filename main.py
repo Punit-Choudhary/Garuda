@@ -10,6 +10,7 @@ from Tools.utils import get_prefix
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
+OWNER = os.getenv("OWNER")
 
 # Setting up Discord Intents
 intents = discord.Intents.default()
@@ -23,7 +24,7 @@ bot = commands.Bot(
     intents = intents,
     case_insensitivity = True,
     strip_after_prefix = True,
-    owner_id = 742931080096776242,
+    owner_id = OWNER,
     help_command=PrettyHelp()
 )
 
