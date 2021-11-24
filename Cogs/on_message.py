@@ -55,7 +55,7 @@ class OnMessageCog(commands.Cog):
             def check(message):
                 return (message.author == message.author and (datetime.utcnow() - message.created_at).seconds < 15)
         
-            if len(list(filter(lambda x: check(x), self.bot.cached_messages))) >= 5 and len(list(filter(lambda x: check(x), self.bot.cached_messages))) < 9:
+            if len(list(filter(lambda x: check(x), self.bot.cached_messages))) >= 8 and len(list(filter(lambda x: check(x), self.bot.cached_messages))) < 12:
                 spam_warn_embed = discord.Embed(
                     title = f"STOP SPAMMING {message.author}",
                     description = "🦅: Stop Spamming Kiddo! 👁",
