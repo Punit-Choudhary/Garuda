@@ -1,16 +1,28 @@
 import os
+import logging
 import discord
 
 from dotenv import load_dotenv
 from discord.ext import commands
 from pretty_help import PrettyHelp
+from rich.logging import RichHandler
 
 from Tools.utils import get_prefix
 
 
+# getting environment variables
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 OWNER = os.getenv("OWNER")
+
+
+# setting up logging
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="INFO", format=FORMAT, datefmt="[%x]", handlers=[RichHandler()]
+)
+
+log = logging.getLogger("rich")
 
 # Setting up Discord Intents
 intents = discord.Intents.default()
@@ -32,18 +44,18 @@ bot = commands.Bot(
 # Loading Cogs
 for cog in os.listdir("Cogs"):
     if cog.startswith("__pycache__"):
-        print("Skipping __pycache__ folder")
+        log.info("Skipping __pycache__ folder")
     else:
         try:
             bot.load_extension(f"Cogs.{cog[:-3]}")
-            print(f"Loaded {cog[:-3]} ✅")
+            log.info(f"Loaded {cog[:-3]} ✅")
         except Exception as e:
-            print(f"Failed to load {cog[:-3]}, error: {e}")
+            log.fatal(f"Failed to load {cog[:-3]}, error: {e}")
 
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} 🦅 is active now 😎")
+    log.info(f"{bot.user} 🦅 is active now 😎")
     await bot.change_presence(
         activity = discord.Activity(
             type = discord.ActivityType.watching,
