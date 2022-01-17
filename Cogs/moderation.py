@@ -1,6 +1,17 @@
 import discord
+import logging
 
 from discord.ext import commands
+from rich.logging import RichHandler
+
+
+# setting up logging
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="INFO", format=FORMAT, datefmt="[%x]", handlers=[RichHandler()]
+)
+
+log = logging.getLogger("rich")
 
 
 class ModerationCog(commands.Cog, name="Moderation Commands"):
@@ -18,7 +29,7 @@ class ModerationCog(commands.Cog, name="Moderation Commands"):
             kick_fun_embed = discord.Embed(
                 title="**Are you OK bro??**",
                 description=f"🦅: {ctx.author.mention}, Looks like you need to visit a psychiatrist\n\
-                    Here is the [contact info](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)",
+                    Here is the [contact info](https://www.youtube.com/watch?v=dQw4w9WgXcQ)",
                 color = 0x7716f5    # Purple
             )
             await ctx.channel.send(embed = kick_fun_embed)
@@ -59,7 +70,7 @@ class ModerationCog(commands.Cog, name="Moderation Commands"):
             ban_fun_embed = discord.Embed(
                 title="**Are you OK bro??**",
                 description=f"🦅: {ctx.author.mention}, Looks like you need to visit a psychiatrist\n\
-                    Here is the [contact info](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)",
+                    Here is the [contact info](https://www.youtube.com/watch?v=dQw4w9WgXcQ)",
                 color = 0x7716f5    # Purple
             )
             await ctx.channel.send(embed = ban_fun_embed)
@@ -86,10 +97,16 @@ class ModerationCog(commands.Cog, name="Moderation Commands"):
             ban_embed.set_footer(text=f"Reason: {reason}")
             ban_embed.set_thumbnail(url="https://media.tenor.co/videos/16d1dd77408db03a6c78210391957fc5/mp4")
 
-            await ctx.send(embed = ban_embed)
+            await ctx.send(embed=ban_embed)
         except Exception as e:
-            print(e)
-    
+            log.warn(e)
+            ban_exception_embed = discord.Embed(
+                title="Forbidden ⛔",
+                description=f"🦅: Either I don't have permissons to kick or {member.mention} has higher role.",
+                color=0xFF0000
+            )
+
+            await ctx.send(embed=ban_exception_embed)
 
     @commands.command(name="clear", usage="<number of messages> | default 100")
     @commands.has_permissions(manage_messages=True)
