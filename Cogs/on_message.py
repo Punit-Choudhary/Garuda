@@ -1,10 +1,23 @@
+from dis import dis
+from pydoc import describe
 import re
+import logging
 import discord
 from random import choice
 from discord.ext import commands
+from rich.logging import RichHandler
 
 from Tools.utils import getConfig, get_prefix
 from datetime import datetime
+
+
+# setting up logging
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="INFO", format=FORMAT, datefmt="[%x]", handlers=[RichHandler()]
+)
+
+log = logging.getLogger("rich")
 
 
 class OnMessageCog(commands.Cog):
@@ -27,19 +40,12 @@ class OnMessageCog(commands.Cog):
         if self.bot.user.mentioned_in(message):
             responses = ["what's up?", "what happend kid?", "Hello 👋", "I am watching 👁‍🗨", "How are you doing?", "Feeling safe?", "Everything OK?"]
 
-            if message.author.id != self.bot.owner_id:
-                reply = discord.Embed(
-                    title = "Garuda 🦅",
-                    description = f"🦅: {choice(responses)}, Btw all commands are available at `{await get_prefix(self.bot, message)}help`",
-                    color = 0xFFFF00
-                )
-            else:
-                latency = round(self.bot.latency * 1000, 2)
-                reply = discord.Embed(
-                    title = "Garuda 🦅",
-                    description = f"🦅: I am active & doing my job,\nlatency: {latency}ms",
-                    color = 0xFFFF00
-                )
+            reply = discord.Embed(
+                title = "Garuda 🦅",
+                description = f"🦅: {choice(responses)}, Btw all commands are available at `{await get_prefix(self.bot, message)}help`",
+                color = 0xFFFF00
+            )
+
             await message.channel.send(embed = reply)
 
         # Don't watch Admin's messages        
@@ -72,7 +78,18 @@ class OnMessageCog(commands.Cog):
                 # send kick notification in User's DM
                 await message.author.send(embed = spam_kick_embed_dm)
                 # kick the user
-                await message.author.kick()
+                try:
+                    await message.author.kick()
+                except Exception as e:
+                    if isinstance(e, discord.errors.Forbidden):
+                        log.warn(f"Kick permission not available!\nGuild: {message.guild}, Author: {message.author.name}, Message: {message.content}")
+                        kick_forbidden_embed = discord.Embed(
+                            title="Missing Permissions :pleading_face:",
+                            description=f"Hey Admins, I don't have permissions to kick the spammer, {message.author.name} :cry:",
+                            color=0xFFC0CB
+                        )
+
+                        await message.channel.send(embed=kick_forbidden_embed)
 
                 spam_kick_embed = discord.Embed(
                  title = "**User Has Been Kicked 👢**",
