@@ -1,5 +1,3 @@
-from dis import dis
-from pydoc import describe
 import re
 import logging
 import discord
